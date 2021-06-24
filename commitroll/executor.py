@@ -7,22 +7,24 @@ class Executor:
 
         self.commitroll = commitroll
 
-    def commit(self, obj_ref, func, *args, **kwargs):
-        self.commitroll.commit((obj_ref, func, args, kwargs))
+    def commit(self, obj_ref, state):
+        self.commitroll.commit((obj_ref, state))
 
     def roll_backward(self):
         if not self.commitroll.can_roll_backward:
-            return
+            return False
 
         self.commitroll.roll_backward()
         self.__execute()
+        return True
 
     def roll_forward(self):
         if not self.commitroll.can_roll_forward:
-            return
+            return False
 
         self.commitroll.roll_forward()
         self.__execute()
+        return True
 
     def __execute(self):
         next = self.commitroll.current
@@ -30,5 +32,5 @@ class Executor:
         if next is None:
             return
 
-        obj_ref, func, args, kwargs = next
-        obj_ref.execute(func, *args, **kwargs)
+        obj_ref, state = next
+        obj_ref.execute(state)

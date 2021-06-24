@@ -25,13 +25,17 @@ class CommitRoll:
     def clear(self):
         self.backward_stack.clear()
         self.forward_stack.clear()
+        return True
 
     def commit(self, state):
         self.backward_stack.push(state)
         self.forward_stack.clear()
+        return True
 
     def roll_backward(self):
         self.forward_stack.push(self.backward_stack.pop())
+        return True
 
     def roll_forward(self):
         self.backward_stack.push(self.forward_stack.pop())
+        return True

@@ -10,7 +10,7 @@ class TextField:
     def __init__(self):
         self.text = None
 
-    @commitable.CommitFunction
+    @commitable.Commit
     def setText(self, text):
         self.text = text
         print ("TextField: Set Text to " + (text if text is not None else "None") + "!")
@@ -23,6 +23,10 @@ class Button:
     def __init__(self):
         self.color = None
         self.text = None
+
+    @commitable.NoCommit
+    def print(self):
+        print (f"Button: {self.color=}, {self.text=}")
 
     def setColor(self, color):
         self.color = color
@@ -51,11 +55,15 @@ def main():
 
     print ("Roll Backward")
     for i in range(7):
-        executor.roll_backward()
+        if executor.roll_backward():
+            textfield.print()
+            button.print()
 
     print ("Roll Forward")
     for i in range(10):
-        executor.roll_forward()
+        if executor.roll_forward():
+            textfield.print()
+            button.print()
 
 
 if __name__ == '__main__':
